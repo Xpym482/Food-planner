@@ -1,0 +1,2 @@
+rootProject.name='food-planner-project'
+include ':app'
