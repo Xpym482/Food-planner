@@ -9,12 +9,73 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuItemCompat
-import kotlinx.android.synthetic.main.home_page.*
+//import com.google.firebase.database.*
 import kotlin.collections.ArrayList
+import kotlinx.android.synthetic.main.home_page.*
+import java.util.*
+//import com.firebase.client.ValueEventListener
+//import com.google.firebase.database.ValueEventListener
 
 
-//import java.util.*
 
+//class SearchPage: Observable() {
+//
+//    private var m_valueDataListener: ValueEventListener? = null     // The data listener that gets the data from the database
+//    private var m_foodsList: ArrayList<foods>? = ArrayList()    // Person cache
+//
+//    //gets the database location reference for later repeated use
+//    private fun getDatabaseRef(): DatabaseReference? {
+//        return FirebaseDatabase.getInstance().reference.child("foods")
+//    }
+//
+//    //called on object initialisation
+//    init {
+//        if (m_valueDataListener != null) {
+//
+//            getDatabaseRef()?.removeEventListener(m_valueDataListener)
+//        }
+//        m_valueDataListener = null
+//        Log.i("SearchPage", "dataInit line 27")
+//
+//
+//        m_valueDataListener = object: ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+//                try {
+//                    Log.i("PersonModel", "data updated line 28")
+//                    val data: ArrayList<foods> = ArrayList()
+//                    if (dataSnapshot != null) {
+//                        for (snapshot: DataSnapshot in dataSnapshot.children) {
+//                            try {
+//                                data.add(foods(snapshot))
+//                            } catch (e: Exception) {
+//                                e.printStackTrace()
+//                            }
+//                        }
+//                        m_foodsList = data
+//                        Log.i("SearchPage","data updated there are " + m_foodsList!!.size + " foods in the list")
+//                        setChanged()
+//                        notifyObservers()
+//                    } else {
+//                        throw Exception("data snapshot is null line 31")
+//                    }
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
+//            }
+//
+//            override fun onCancelled(p0: DatabaseError?) {
+//                if (p0 != null) {
+//                    Log.i("SearchPage", "line 33 Data update cancelled, err = ${p0.message}, detail = ${p0.details}")
+//                }
+//            }
+//        }
+//        getDatabaseRef()?.addValueEventListener(m_valueDataListener)
+//    }
+//
+//    fun getData(): ArrayList<Person>? {
+//        return m_foodsList
+//    }
+//}
 
 class SearchPage : AppCompatActivity() {
     var listView: ListView? = null
@@ -57,7 +118,7 @@ class SearchPage : AppCompatActivity() {
             val editText  = dialogLayout.findViewById<EditText>(R.id.gramms)
             builder.setView(dialogLayout)
             builder.setPositiveButton("OK") { dialogInterface, i ->
-                Toast.makeText(applicationContext, "You choosed " + list!![0], Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "You chose " + list!![0], Toast.LENGTH_SHORT).show()
             }
             builder.show()
 
