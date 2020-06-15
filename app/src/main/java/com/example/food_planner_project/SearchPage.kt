@@ -1,7 +1,7 @@
 package com.example.food_planner_project
 
 import android.R.layout.simple_list_item_1
-import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
@@ -9,12 +9,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuItemCompat
-import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.util.*
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.AppBarConfiguration
+import kotlinx.android.synthetic.main.home_page.*
 import kotlin.collections.ArrayList
 
 
@@ -30,8 +25,8 @@ class SearchPage : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+        setContentView(R.layout.search_page)
+        bottomNavBarListenerSetup();
         listView = findViewById<View>(R.id.listView) as ListView
         list = ArrayList()
         list!!.add("Apple")
@@ -52,9 +47,8 @@ class SearchPage : AppCompatActivity() {
 
             val builder = AlertDialog.Builder(this);
             // Get the layout inflater
-//            builder.setMessage("Test: ")
             val inflater = layoutInflater;
-            val dialogLayout = inflater.inflate(R.layout.content_main, null)
+            val dialogLayout = inflater.inflate(R.layout.input_box, null)
             val editText  = dialogLayout.findViewById<EditText>(R.id.gramms)
             builder.setView(dialogLayout)
             builder.setPositiveButton("OK") { dialogInterface, i ->
@@ -86,4 +80,20 @@ class SearchPage : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    private fun bottomNavBarListenerSetup() {
+        bottom_navigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {//like switch statement
+                R.id.navigation_search -> {
+                    true
+                }
+                R.id.navigation_home -> {
+                   val intent = Intent(this, HomePage::class.java)
+                    startActivity(intent);
+                    true
+                }
+                else -> true
+            }
+        }
+    }
 }
+
