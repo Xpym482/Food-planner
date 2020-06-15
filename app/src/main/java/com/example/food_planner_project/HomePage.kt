@@ -24,7 +24,7 @@ class HomePage : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_page)
         bottomNavBarListenerSetup();
-
+        GetProducts()
     }
 
     private fun bottomNavBarListenerSetup() {
@@ -41,5 +41,11 @@ class HomePage : AppCompatActivity(){
                 else -> true
             }
         }
+    }
+
+    private fun GetProducts(): String {
+        val bundle = intent.extras
+        val obj: ArrayList<Product> = intent.getSerializableExtra("products") as ArrayList<Product>
+        return "test"
     }
 }

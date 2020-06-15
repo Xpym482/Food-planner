@@ -21,12 +21,17 @@ class SearchPage : AppCompatActivity() {
     var list: ArrayList<String>? = null
     var adapter: ArrayAdapter<String>? = null
     var textView: TextView? = null
-
+    var productsList = ArrayList<Product>()
+    var id = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search_page)
-        bottomNavBarListenerSetup();
+        val product1 = Product(id++, "Grechka", 65,1, 24,200)
+        val product2 = Product(id++, "Rice", 15,100, 25,100)
+        productsList.add(product1)
+        productsList.add(product2)
+
         listView = findViewById<View>(R.id.listView) as ListView
         list = ArrayList()
         list!!.add("Apple")
@@ -57,6 +62,8 @@ class SearchPage : AppCompatActivity() {
             builder.show()
 
         }
+
+        bottomNavBarListenerSetup(productsList!!);
     }
 
 
@@ -80,7 +87,7 @@ class SearchPage : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    private fun bottomNavBarListenerSetup() {
+    private fun bottomNavBarListenerSetup(listProducts: ArrayList<Product>) {
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {//like switch statement
                 R.id.navigation_search -> {
@@ -88,6 +95,7 @@ class SearchPage : AppCompatActivity() {
                 }
                 R.id.navigation_home -> {
                    val intent = Intent(this, HomePage::class.java)
+                    intent.putExtra("products", listProducts)
                     startActivity(intent);
                     true
                 }
