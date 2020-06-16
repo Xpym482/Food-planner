@@ -75,8 +75,8 @@ class HomePage : AppCompatActivity(){
             sumValg += product.Valgud
         }
 
-        sumView = findViewById<TextView>(R.id.sum) as TextView
-//        sumView.text = sumKal.toString()
+        sumView = findViewById<TextView>(R.id.kaloor_sum) as TextView
+        sumView.text = sumKal.toString()
 
     }
 }
