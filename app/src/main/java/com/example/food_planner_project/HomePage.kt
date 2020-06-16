@@ -74,9 +74,19 @@ class HomePage : AppCompatActivity(){
             sumSus += product.Susivesikud
             sumValg += product.Valgud
         }
-
+        // Kalorid
         sumView = findViewById<TextView>(R.id.kaloor_sum) as TextView
         sumView.text = sumKal.toString()
+        // Valgud
+        sumView = findViewById<TextView>(R.id.valgud_sum) as TextView
+        sumView.text = sumValg.toString()
+        //Sussivesikud
+        sumView = findViewById<TextView>(R.id.susi_sum) as TextView
+        sumView.text = sumSus.toString()
+        //Rasvad
+        sumView = findViewById<TextView>(R.id.rasvad_sum) as TextView
+        sumView.text = sumRasv.toString()
+
 
     }
 }
