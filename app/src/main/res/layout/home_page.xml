@@ -8,12 +8,21 @@
             android:layout_width="match_parent"
             android:layout_height="680dp"
             android:orientation="vertical">
-
-        <ListView
-        android:id="@+id/products_list"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-            />
+        <LinearLayout
+            android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:orientation="horizontal">
+                <ListView
+                android:id="@+id/products_list"
+                android:layout_width="300dp"
+                android:layout_height="400dp"
+                    />
+                <ListView
+                    android:id="@+id/product_weight"
+                    android:layout_width="100dp"
+                    android:layout_height="400dp"
+                    />
+        </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="30dp"

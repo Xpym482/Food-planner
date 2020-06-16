@@ -40,21 +40,34 @@ class HomePage : AppCompatActivity(){
 
     private fun GetProducts(): ArrayList<Product>? {
         val products: ArrayList<Product>? = intent.getSerializableExtra("products") as ArrayList<Product>?
+        gramms = intent.getSerializableExtra("gramms") as ArrayList<Int>?
 
         var listView: ListView? = null
-        var adapter: ArrayAdapter<String>? = null
-        var list: ArrayList<String>? = null
-        list = ArrayList()
+        var listWeightView: ListView? = null
+        var adapterItems: ArrayAdapter<String>? = null
+        var adapterWeight: ArrayAdapter<String>? = null
+        var listTitles: ArrayList<String>? = null
+        var listGramms: ArrayList<String>? = null
+        listTitles = ArrayList()
+        listGramms = ArrayList()
+
 
         if (products != null) {
             products.forEach { product ->
-                list!!.add(product.title)
+                listTitles!!.add(product.title)
             }
         }
 
+        gramms?.forEach { gramm ->
+            listGramms!!.add(gramm.toString() + "g")
+        }
+
+        listWeightView = findViewById<View>(R.id.product_weight) as ListView
         listView = findViewById<View>(R.id.products_list) as ListView
-        adapter = ArrayAdapter(this, simple_list_item_1, list!!)
-        listView!!.adapter = adapter
+        adapterWeight = ArrayAdapter(this, simple_list_item_1, listGramms!!)
+        adapterItems = ArrayAdapter(this, simple_list_item_1, listTitles!!)
+        listView!!.adapter = adapterItems
+        listWeightView!!.adapter = adapterWeight
 
         return products
     }
