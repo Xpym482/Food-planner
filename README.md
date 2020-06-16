@@ -28,3 +28,6 @@ Tarkvara summeerib toote kaalus<br>
 Tarkvara kirjutab valitud toote omadused(kalorid, susivesikud, valgud, rasvad)<br>
 Tarkvara ühendatud firebase andmebaasiga<br>
 Tarkvaras on lisatud Searchbar meetod<br>
+
+Video:
+https://www.youtube.com/watch?v=rFpZEKmjxhI&feature=youtu.be
