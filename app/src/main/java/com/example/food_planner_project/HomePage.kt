@@ -2,29 +2,24 @@ package com.example.food_planner_project
 
 import androidx.appcompat.app.AppCompatActivity
 import android.R.layout.simple_list_item_1
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
-import androidx.core.view.MenuItemCompat
-import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.util.*
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.AppBarConfiguration
 import kotlinx.android.synthetic.main.home_page.*
 import kotlin.collections.ArrayList
 
 class HomePage : AppCompatActivity(){
+
+    var productsFromSearch: ArrayList<Product>? = null
+    var gramms: ArrayList<Int>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_page)
         bottomNavBarListenerSetup();
-        calcProducts(GetProducts())
+        productsFromSearch = GetProducts()
+        if (productsFromSearch?.isEmpty() == false) calcProducts(productsFromSearch)
     }
 
     private fun bottomNavBarListenerSetup() {
@@ -43,15 +38,18 @@ class HomePage : AppCompatActivity(){
         }
     }
 
-    private fun GetProducts(): ArrayList<Product> {
-        val products: ArrayList<Product> = intent.getSerializableExtra("products") as ArrayList<Product>
+    private fun GetProducts(): ArrayList<Product>? {
+        val products: ArrayList<Product>? = intent.getSerializableExtra("products") as ArrayList<Product>?
+
         var listView: ListView? = null
         var adapter: ArrayAdapter<String>? = null
         var list: ArrayList<String>? = null
         list = ArrayList()
 
-        products.forEach { product ->
-            list!!.add(product.title)
+        if (products != null) {
+            products.forEach { product ->
+                list!!.add(product.title)
+            }
         }
 
         listView = findViewById<View>(R.id.products_list) as ListView
@@ -61,18 +59,21 @@ class HomePage : AppCompatActivity(){
         return products
     }
 
-    private fun calcProducts(productsList: ArrayList<Product>){
-        var sumRasv : Int = 0
-        var sumKal : Int = 0
-        var sumSus : Int = 0
-        var sumValg : Int = 0
+    private fun calcProducts(productsList: ArrayList<Product>?){
+        gramms = intent.getSerializableExtra("gramms") as ArrayList<Int>?
+        var sumRasv : Double = 0.0
+        var sumKal : Double = 0.0
+        var sumSus : Double = 0.0
+        var sumValg : Double = 0.0
         var sumView: TextView? = null
+        var i : Int = 0
 
-        productsList.forEach{product ->
-            sumKal += product.Kalorid
-            sumRasv += product.Rasvad
-            sumSus += product.Susivesikud
-            sumValg += product.Valgud
+        productsList?.forEach{product ->
+            sumKal += gramms!![i].toDouble() / 100 * product.Kalorid
+            sumRasv += gramms!![i].toDouble() / 100 * product.Rasvad
+            sumSus += gramms!![i].toDouble() / 100 * product.Susivesikud
+            sumValg += gramms!![i].toDouble() / 100 * product.Valgud
+            i++
         }
         // Kalorid
         sumView = findViewById<TextView>(R.id.kaloor_sum) as TextView

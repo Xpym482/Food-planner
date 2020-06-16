@@ -16,21 +16,19 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlin.collections.ArrayList
 import kotlinx.android.synthetic.main.home_page.*
-import java.util.*
 
 
 class SearchPage : AppCompatActivity() {
     var listView: ListView? = null
     var list: ArrayList<String>? = null
+    var listGramms = ArrayList<Int>()
     var adapter: ArrayAdapter<String>? = null
-    var textView: TextView? = null
-    var productsList = ArrayList<Product>()
+    var productsList = ArrayList<String>()
     var productsFromDB = ArrayList<Product>()
-    var id = 0L
+    var transferProducts = ArrayList<Product>()
 
     private lateinit var postKey: String
     private lateinit var database: DatabaseReference
@@ -44,18 +42,11 @@ class SearchPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search_page)
 
-
-        // Check if user is signed in (non-null) and update UI accordingly.
-
-//        val product1 = Product(id++, "Grechka", 65,1, 24,200)
-//        val product2 = Product(id++, "Rice", 15,100, 25,100)
-//        productsList.add(product1)
-//        productsList.add(product2)
-
         list = ArrayList()
 
         val database = Firebase.database
         val myRef = database.getReference("Product")
+
         // Read from the database
         val postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -72,7 +63,7 @@ class SearchPage : AppCompatActivity() {
 
             override fun onCancelled(databaseError: DatabaseError) {
                 // Getting Post failed, log a message
-                //Log.w(TAG, "loadPost:onCancelled", databaseError.toException()) .
+                Log.w("loadPost:onCancelled", databaseError.toException())
             }
 
         }
@@ -81,8 +72,7 @@ class SearchPage : AppCompatActivity() {
 
     private fun inputGramms(productsView: ListView? ){
         productsView!!.setOnItemClickListener { adapterView, view, i, l ->
-            val position = i
-
+            var position = i
             val builder = AlertDialog.Builder(this);
             // Get the layout inflater
             val inflater = layoutInflater;
@@ -90,13 +80,14 @@ class SearchPage : AppCompatActivity() {
             val editText  = dialogLayout.findViewById<EditText>(R.id.gramms)
             builder.setView(dialogLayout)
             builder.setPositiveButton("OK") { dialogInterface, i ->
-                Toast.makeText(applicationContext, "You chose " + list!![0], Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "You chose " + list!![position], Toast.LENGTH_SHORT).show()
+                transferProducts.add(productsFromDB[position])
+                productsList.add(editText.text.toString())
+                listGramms.add(Integer.parseInt(editText.text.toString()))
             }
             builder.show()
-
         }
-
-        bottomNavBarListenerSetup(productsFromDB!!);
+        bottomNavBarListenerSetup(transferProducts, listGramms);
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -119,7 +110,7 @@ class SearchPage : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    private fun bottomNavBarListenerSetup(listProducts: ArrayList<Product>) {
+    private fun bottomNavBarListenerSetup(listProducts: ArrayList<Product>? = null, productsGramms: ArrayList<Int>? = null) {
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {//like switch statement
                 R.id.navigation_search -> {
@@ -128,6 +119,7 @@ class SearchPage : AppCompatActivity() {
                 R.id.navigation_home -> {
                    val intent = Intent(this, HomePage::class.java)
                     intent.putExtra("products", listProducts)
+                    intent.putExtra("gramms", productsGramms)
                     startActivity(intent);
                     true
                 }
