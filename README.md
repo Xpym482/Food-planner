@@ -1,4 +1,4 @@
-# Food-planner
+# Food-calculator
 * Rakendus on loodud <b>IFI6224.DT Mobiilirakenduste arendamise</b> Android Native projekti raames.
 
 Meeskond: Maksim Jelizarov ja Artur Šovkunenko<br>
