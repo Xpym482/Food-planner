@@ -3,79 +3,25 @@ package com.example.food_planner_project
 import android.R.layout.simple_list_item_1
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuItemCompat
-//import com.google.firebase.database.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
 import kotlin.collections.ArrayList
 import kotlinx.android.synthetic.main.home_page.*
 import java.util.*
-//import com.firebase.client.ValueEventListener
-//import com.google.firebase.database.ValueEventListener
 
-
-
-//class SearchPage: Observable() {
-//
-//    private var m_valueDataListener: ValueEventListener? = null     // The data listener that gets the data from the database
-//    private var m_foodsList: ArrayList<foods>? = ArrayList()    // Person cache
-//
-//    //gets the database location reference for later repeated use
-//    private fun getDatabaseRef(): DatabaseReference? {
-//        return FirebaseDatabase.getInstance().reference.child("foods")
-//    }
-//
-//    //called on object initialisation
-//    init {
-//        if (m_valueDataListener != null) {
-//
-//            getDatabaseRef()?.removeEventListener(m_valueDataListener)
-//        }
-//        m_valueDataListener = null
-//        Log.i("SearchPage", "dataInit line 27")
-//
-//
-//        m_valueDataListener = object: ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot?) {
-//                try {
-//                    Log.i("PersonModel", "data updated line 28")
-//                    val data: ArrayList<foods> = ArrayList()
-//                    if (dataSnapshot != null) {
-//                        for (snapshot: DataSnapshot in dataSnapshot.children) {
-//                            try {
-//                                data.add(foods(snapshot))
-//                            } catch (e: Exception) {
-//                                e.printStackTrace()
-//                            }
-//                        }
-//                        m_foodsList = data
-//                        Log.i("SearchPage","data updated there are " + m_foodsList!!.size + " foods in the list")
-//                        setChanged()
-//                        notifyObservers()
-//                    } else {
-//                        throw Exception("data snapshot is null line 31")
-//                    }
-//                } catch (e: Exception) {
-//                    e.printStackTrace()
-//                }
-//            }
-//
-//            override fun onCancelled(p0: DatabaseError?) {
-//                if (p0 != null) {
-//                    Log.i("SearchPage", "line 33 Data update cancelled, err = ${p0.message}, detail = ${p0.details}")
-//                }
-//            }
-//        }
-//        getDatabaseRef()?.addValueEventListener(m_valueDataListener)
-//    }
-//
-//    fun getData(): ArrayList<Person>? {
-//        return m_foodsList
-//    }
-//}
 
 class SearchPage : AppCompatActivity() {
     var listView: ListView? = null
@@ -83,32 +29,58 @@ class SearchPage : AppCompatActivity() {
     var adapter: ArrayAdapter<String>? = null
     var textView: TextView? = null
     var productsList = ArrayList<Product>()
+    var productsFromDB = ArrayList<Product>()
     var id = 0L
+
+    private lateinit var postKey: String
+    private lateinit var database: DatabaseReference
+    private lateinit var postReference: DatabaseReference
+    private var postListener: ValueEventListener? = null
+
+
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search_page)
-        val product1 = Product(id++, "Grechka", 65,1, 24,200)
-        val product2 = Product(id++, "Rice", 15,100, 25,100)
-        productsList.add(product1)
-        productsList.add(product2)
 
-        listView = findViewById<View>(R.id.listView) as ListView
+
+        // Check if user is signed in (non-null) and update UI accordingly.
+
+//        val product1 = Product(id++, "Grechka", 65,1, 24,200)
+//        val product2 = Product(id++, "Rice", 15,100, 25,100)
+//        productsList.add(product1)
+//        productsList.add(product2)
+
         list = ArrayList()
-        list!!.add("Apple")
-        list!!.add("Banana")
-        list!!.add("Pineapple")
-        list!!.add("Orange")
-        list!!.add("Lychee")
-        list!!.add("Gavava")
-        list!!.add("Peech")
-        list!!.add("Melon")
-        list!!.add("Watermelon")
-        list!!.add("Papaya")
-        adapter = ArrayAdapter(this, simple_list_item_1, list!!)
-        listView!!.adapter = adapter
 
-        listView!!.setOnItemClickListener { adapterView, view, i, l ->
+        val database = Firebase.database
+        val myRef = database.getReference("Product")
+        // Read from the database
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for(h in dataSnapshot.children){
+                    val product = h.getValue(Product::class.java)
+                    productsFromDB.add(product!!)
+                    list!!.add(product.title)
+                }
+                listView = findViewById<View>(R.id.listView) as ListView
+                adapter = ArrayAdapter(applicationContext, simple_list_item_1, list!!)
+                listView!!.adapter = adapter
+                inputGramms(listView)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                //Log.w(TAG, "loadPost:onCancelled", databaseError.toException()) .
+            }
+
+        }
+        myRef.addValueEventListener(postListener)
+    }
+
+    private fun inputGramms(productsView: ListView? ){
+        productsView!!.setOnItemClickListener { adapterView, view, i, l ->
             val position = i
 
             val builder = AlertDialog.Builder(this);
@@ -124,9 +96,8 @@ class SearchPage : AppCompatActivity() {
 
         }
 
-        bottomNavBarListenerSetup(productsList!!);
+        bottomNavBarListenerSetup(productsFromDB!!);
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
