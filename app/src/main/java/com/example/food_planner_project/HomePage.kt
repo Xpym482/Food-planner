@@ -24,7 +24,7 @@ class HomePage : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_page)
         bottomNavBarListenerSetup();
-        GetProducts()
+        calcProducts(GetProducts())
     }
 
     private fun bottomNavBarListenerSetup() {
@@ -43,9 +43,40 @@ class HomePage : AppCompatActivity(){
         }
     }
 
-    private fun GetProducts(): String {
-        val bundle = intent.extras
-        val obj: ArrayList<Product> = intent.getSerializableExtra("products") as ArrayList<Product>
-        return "test"
+    private fun GetProducts(): ArrayList<Product> {
+        val products: ArrayList<Product> = intent.getSerializableExtra("products") as ArrayList<Product>
+        var listView: ListView? = null
+        var adapter: ArrayAdapter<String>? = null
+        var list: ArrayList<String>? = null
+        list = ArrayList()
+
+        products.forEach { product ->
+            list!!.add(product.title)
+        }
+
+        listView = findViewById<View>(R.id.products_list) as ListView
+        adapter = ArrayAdapter(this, simple_list_item_1, list!!)
+        listView!!.adapter = adapter
+
+        return products
+    }
+
+    private fun calcProducts(productsList: ArrayList<Product>){
+        var sumRasv : Int = 0
+        var sumKal : Int = 0
+        var sumSus : Int = 0
+        var sumValg : Int = 0
+        var sumView: TextView? = null
+
+        productsList.forEach{product ->
+            sumKal += product.Kalorid
+            sumRasv += product.Rasvad
+            sumSus += product.Susivesikud
+            sumValg += product.Valgud
+        }
+
+        sumView = findViewById<TextView>(R.id.sum) as TextView
+//        sumView.text = sumKal.toString()
+
     }
 }

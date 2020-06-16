@@ -4,6 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="600dp"
+            android:orientation="vertical">
+
+        <ListView
+        android:id="@+id/products_list"
+        android:layout_width="match_parent"
+        android:layout_height="550dp"
+            />
+
+        <TextView
+            android:id="@+id/sum"
+            android:text="Kalooride summa on: "
+            android:textSize="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:background="@drawable/back"
+            >
+        </TextView>
+
+        </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
