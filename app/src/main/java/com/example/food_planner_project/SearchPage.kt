@@ -80,10 +80,16 @@ class SearchPage : AppCompatActivity() {
             val editText  = dialogLayout.findViewById<EditText>(R.id.gramms)
             builder.setView(dialogLayout)
             builder.setPositiveButton("OK") { dialogInterface, i ->
-                Toast.makeText(applicationContext, "You chose " + list!![position], Toast.LENGTH_SHORT).show()
-                transferProducts.add(productsFromDB[position])
-                productsList.add(editText.text.toString())
-                listGramms.add(Integer.parseInt(editText.text.toString()))
+                if(editText.text.toString().isNullOrEmpty() == false) {
+                    Toast.makeText(
+                        applicationContext,
+                        "You chose " + list!![position],
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    transferProducts.add(productsFromDB[position])
+                    productsList.add(editText.text.toString())
+                    listGramms.add(Integer.parseInt(editText.text.toString()))
+                }
             }
             builder.show()
         }
