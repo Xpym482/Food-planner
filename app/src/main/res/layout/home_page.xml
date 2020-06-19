@@ -14,12 +14,12 @@
                 android:orientation="horizontal">
                 <ListView
                 android:id="@+id/products_list"
-                android:layout_width="300dp"
+                android:layout_width="250dp"
                 android:layout_height="400dp"
                     />
                 <ListView
                     android:id="@+id/product_weight"
-                    android:layout_width="100dp"
+                    android:layout_width="150dp"
                     android:layout_height="400dp"
                     />
         </LinearLayout>
@@ -42,7 +42,7 @@
                             android:textSize="20sp"
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
-                            android:layout_marginLeft="85dp"
+                            android:layout_marginLeft="40dp"
                             android:background="@drawable/back">
                         </TextView>
                 </LinearLayout>
@@ -65,7 +65,7 @@
                             android:textSize="20sp"
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
-                            android:layout_marginLeft="85dp"
+                            android:layout_marginLeft="40dp"
                             android:background="@drawable/back">
                         </TextView>
                 </LinearLayout>
@@ -88,7 +88,7 @@
                             android:textSize="20sp"
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
-                            android:layout_marginLeft="85dp"
+                            android:layout_marginLeft="40dp"
                             android:background="@drawable/back">
                         </TextView>
                 </LinearLayout>
@@ -111,7 +111,7 @@
                             android:textSize="20sp"
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
-                            android:layout_marginLeft="85dp"
+                            android:layout_marginLeft="40dp"
                             android:background="@drawable/back">
                         </TextView>
                 </LinearLayout>
